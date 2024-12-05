@@ -1,6 +1,5 @@
-const { Schema, model } = require("mongoose");
+import { model, Schema, Model, InferSchemaType } from 'mongoose';
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
     email: {
@@ -16,11 +15,12 @@ const userSchema = new Schema(
     }
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
     timestamps: true
   }
 );
 
-const User = model("User", userSchema);
+type UserType = InferSchemaType<typeof userSchema>
 
-module.exports = User;
+const User: Model<UserType> = model("User", userSchema);
+
+export default User;
