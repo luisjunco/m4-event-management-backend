@@ -19,6 +19,9 @@ configureMiddleware(app);
 import indexRoutes from "./routes/index.routes";
 app.use("/api", indexRoutes);
 
+import eventRoutes from "./routes/event.routes";
+app.use("/api", eventRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 import errorHandling from './error-handling';
 errorHandling(app);
