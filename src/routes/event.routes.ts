@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
 
+
 import { RequestCreateEvent, RequestUpdateEvent } from '../types/requests';
-import Event from '../models/Event.model';
-
-
+import prisma from '../db/index';
 const router = Router();
+
 
 // CREATE: Add a new event
 router.post('/events', async (req: RequestCreateEvent, res: Response) => {
@@ -20,7 +20,8 @@ router.post('/events', async (req: RequestCreateEvent, res: Response) => {
       availableTickets,
     };
 
-    const response = await Event.create(newEvent);
+    
+    const response = await prisma.event.create({data: newEvent});
     res.status(201).json(response);
   } catch (error) {
     console.error(error);
@@ -31,7 +32,7 @@ router.post('/events', async (req: RequestCreateEvent, res: Response) => {
 // READ: Get all events
 router.get('/events', async (req: Request, res: Response) => {
   try {
-    const events = await Event.find();
+    const events = await prisma.event.findMany();
     res.status(200).json(events);
   } catch (error) {
     console.error(error);
@@ -42,7 +43,7 @@ router.get('/events', async (req: Request, res: Response) => {
 // READ: Get a specific event by ID
 router.get('/events/:id', async (req: Request, res: Response) => {
   try {
-    const event = await Event.findById(req.params.id);
+    const event = await prisma.event.findUnique({ where: {id: req.params.id}});
     res.status(200).json(event);
   } catch (error) {
     console.error(error);
@@ -63,11 +64,7 @@ router.put('/events/:id', async (req: RequestUpdateEvent, res: Response) => {
       availableTickets,
     };
 
-    const updatedEvent = await Event.findByIdAndUpdate(
-      req.params.id,
-      newDetails,
-      { new: true }
-    );
+    const updatedEvent = await prisma.event.update({where: {id: req.params.id}, data: newDetails});
 
     res.json(updatedEvent);
   } catch (error) {
@@ -79,7 +76,7 @@ router.put('/events/:id', async (req: RequestUpdateEvent, res: Response) => {
 // DELETE: Delete an event by ID
 router.delete('/events/:id', async (req: Request, res: Response) => {
   try {
-    const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+    const deletedEvent = await prisma.event.delete({where: {id: req.params.id}});
 
     res.json(deletedEvent);
   } catch (error) {

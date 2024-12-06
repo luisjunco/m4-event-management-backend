@@ -7,7 +7,7 @@ export interface RequestCreateEvent extends Request {
         description: string,
         price: number, 
         availableTickets?: number,
-        startTime?: string, // startTime as a string, since we expect the request in json
+        startTime?: string, // date in ISO-8601 DateTime format (as a string, since we expect the request in json)
     }
 }
 
@@ -17,7 +17,7 @@ export interface RequestUpdateEvent extends Request {
         description?: string,
         price?: number, 
         availableTickets?: number,
-        startTime?: string, // startTime as a string, since we expect the request in json
+        startTime?: string, // date in ISO-8601 DateTime format (as a string, since we expect the request in json)
     }
 }
 
