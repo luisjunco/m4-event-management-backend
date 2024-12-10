@@ -3,8 +3,16 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response, next: NextFunction) => {  
+router.get("/", (req: Request, res: Response, next: NextFunction) => {
   res.json("All good in here");
+});
+
+
+router.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString()
+  });
 });
 
 
